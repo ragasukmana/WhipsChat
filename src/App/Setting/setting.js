@@ -1,0 +1,243 @@
+import React, {Component} from 'react';
+import {View, TouchableOpacity, Image, Text} from 'react-native';
+import toast from '../../Public/Component/toast';
+import {ListItem} from 'react-native-elements';
+import {firebaseApp} from '../../config/firebase';
+import styles from '../../Public/Component/style';
+import ImagePicker from 'react-native-image-picker';
+import {connect} from 'react-redux';
+
+class Setting extends Component {
+  static navigationOptions = {
+    headerShown: false,
+  };
+
+  state = {
+    photo: null,
+    blobPhoto: null,
+    dataProfile: [],
+    dataUser: [],
+  };
+
+  componentDidMount() {
+    this.getUser();
+    this.getDataUser();
+  }
+
+  getUser = () => {
+    let db = firebaseApp.database();
+    const id_user = this.props.auth.data.uid;
+    try {
+      db.ref(`/users/${id_user}`).on('value', snap => {
+        let data = snap.val();
+        this.setState({
+          dataProfile: data,
+        });
+      });
+    } catch (error) {
+      toast(error);
+    }
+  };
+
+  submitChangeFriend = photo => {
+    this.setState({loading: true});
+    let authUpdate = firebaseApp.auth();
+    let db = firebaseApp.database();
+    let dataUpdate = {};
+    const myid = this.props.auth.data.uid;
+    authUpdate.currentUser
+      .updateProfile({photoURL: this.state.status})
+      .then(() => {
+        dataUpdate[`users/${myid}/photoURL`] = photo;
+        db.ref('users')
+          .orderByChild(`friend/${myid}`)
+          .startAt('')
+          .once('value')
+          .then(snap => {
+            const snapVal = snap.val();
+            const otherUserKeys = snapVal == null ? [] : Object.keys(snapVal);
+            otherUserKeys.forEach(key => {
+              dataUpdate[`users/${key}/friend/${myid}/photoURL`] = photo;
+            });
+            db.ref().update(dataUpdate);
+            toast('Done');
+          });
+      })
+      .catch(() => {
+        toast('Failed update status');
+      })
+      .finally(() => {
+        this.setState({loading: false});
+      });
+  };
+
+  handlePicture = () => {
+    const options = {
+      storageOption: {
+        quality: 0.4,
+        skipBackup: true,
+        path: 'images',
+      },
+    };
+    ImagePicker.showImagePicker(options, response => {
+      if (response.didCancel) {
+        toast('Take Image Cancel');
+      } else if (response.error) {
+        toast('Take Image Error');
+      } else {
+        const source = response;
+        if (source) {
+          const ext = source.fileName.split('.').pop();
+          const filename = `${this.props.auth.data.uid}.${ext}`;
+          this.setState({
+            photo: source,
+          });
+          this.handleUpload(source.uri, filename)
+            .then(snapshot => {
+              const {fullPath} = snapshot.metadata;
+              firebaseApp
+                .storage()
+                .ref()
+                .child(fullPath)
+                .getDownloadURL()
+                .then(url => {
+                  // const db = firebaseApp.database();
+                  const user = firebaseApp.auth().currentUser;
+                  this.submitChangeFriend(url);
+                  // db.ref(`users/${user.uid}/photoURL/`).set(url);
+                  user
+                    .updateProfile({
+                      photoURL: url,
+                    })
+                    .then(function() {
+                      toast('image success uploaded');
+                    })
+                    .catch(function(error) {
+                      toast(error);
+                    });
+                });
+            })
+            .catch(error => {
+              toast(error);
+            });
+        }
+      }
+    });
+  };
+
+  handleUpload = async (uri, image_name) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = firebaseApp
+      .storage()
+      .ref()
+      .child(`pictures/${image_name}`);
+
+    return ref.put(blob);
+  };
+
+  handleLogout = () => {
+    firebaseApp
+      .auth()
+      .signOut()
+      .then(function() {
+        toast('Account Success Sign Out');
+      })
+      .catch(function(error) {
+        var errorMessage = error.message;
+        toast(errorMessage);
+      });
+  };
+
+  getDataUser = () => {
+    let db = firebaseApp.database();
+    let myid = this.props.auth.data.uid;
+    try {
+      db.ref(`/users/${myid}`).on('value', res => {
+        let dataUser = res.val();
+        this.setState({dataUser: dataUser});
+      });
+    } catch (error) {
+      toast(error);
+    }
+  };
+
+  render() {
+    const {dataProfile} = this.state;
+    const profile = this.state.dataUser;
+
+    return (
+      <View style={styles.headContainerSetting}>
+        <View style={styles.containerSetting}>
+          <View style={styles.headerImageSetting}>
+            {this.props.auth.data.photoURL === null ? (
+              <Image
+                source={require('../../Public/Assets/images/default.png')}
+                style={styles.imageSetting}
+              />
+            ) : (
+              <Image
+                source={{uri: dataProfile.photoURL}}
+                style={styles.imageSetting}
+              />
+            )}
+          </View>
+          <View style={styles.headerChangePicture}>
+            <TouchableOpacity onPress={() => this.handlePicture()}>
+              <Text style={styles.colorFontChangePicture}>Change Pictures</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.containerBodySetting}>
+            <View>
+              <ListItem title="Email" subtitle={profile.email} bottomDivider />
+              <TouchableOpacity
+                activeOpacity={0.4}
+                onPress={() => this.props.navigation.navigate('Editname')}>
+                <ListItem
+                  title="Name"
+                  subtitle={profile.name}
+                  bottomDivider
+                  rightIcon={{name: 'keyboard-arrow-right', size: 32}}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.4}
+                onPress={() => this.props.navigation.navigate('Editstatus')}>
+                <ListItem
+                  title="Status"
+                  subtitle={profile.status}
+                  bottomDivider
+                  rightIcon={{name: 'keyboard-arrow-right', size: 32}}
+                />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity onPress={() => this.handleLogout()}>
+              <ListItem
+                title="SignOut"
+                bottomDivider
+                rightIcon={{name: 'exit-to-app'}}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  }
+}
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  requestAuth: payload =>
+    dispatch({
+      type: 'POST_LOGIN_FULFILLED',
+      payload,
+    }),
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Setting);
