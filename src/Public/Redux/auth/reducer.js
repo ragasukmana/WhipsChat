@@ -27,6 +27,18 @@ const auth = (state = initialState, action) => {
         isLoading: false,
         data: [],
       };
+    case 'POST_REGISTER_PENDING':
+      return {
+        isLoading: true,
+      };
+    case 'POST_REGISTER_REJECT':
+      return {
+        isLoading: false,
+      };
+    case 'POST_REGISTER_FULFILLED':
+      return {
+        isLoading: false,
+      };
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -7,10 +7,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {Icon, Button} from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import styles from '../../Public/Component/style';
-import {firebaseApp} from '../../config/firebase';
+import { firebaseApp } from '../../config/firebase';
 import toast from '../../Public/Component/toast';
+import { connect } from 'react-redux';
 
 class Regis extends Component {
   hadleLogin = () => {
@@ -28,13 +29,13 @@ class Regis extends Component {
   };
 
   handleChange = (text, type) => {
-    this.setState({[type]: text});
+    this.setState({ [type]: text });
   };
 
   handleRegis = () => {
     let db = firebaseApp.database();
-    this.setState({loading: true});
-    const {email, password} = this.state;
+    this.setState({ loading: true });
+    const { email, password } = this.state;
     firebaseApp
       .auth()
       .createUserWithEmailAndPassword(email, password)
@@ -47,15 +48,17 @@ class Regis extends Component {
             uid: credentialUser.user.uid,
             status: 'Hello Gorgeous World',
           });
-
-        toast('Account has been created');
+      })
+      .then(() => {
+        this.props.requestAuth();
+        this.props.navigation.navigate('Login');
       })
       .catch(function(error) {
         var errorMessage = error.message;
         toast(errorMessage);
       })
       .finally(() => {
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   };
   render() {
@@ -124,4 +127,17 @@ class Regis extends Component {
   }
 }
 
-export default Regis;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+const mapDispatchToProps = dispatch => ({
+  requestAuth: () => dispatch({ type: 'POST_REGISTER_FULFILLED' }),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Regis);

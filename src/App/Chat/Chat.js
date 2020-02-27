@@ -32,6 +32,7 @@ class Chat extends React.Component {
         return db
           .ref('Chat')
           .push({
+            lastMessage: '',
             member: {
               [friend]: dataFriend,
               [myId]: this.state.myData,
@@ -103,10 +104,16 @@ class Chat extends React.Component {
 
   onSend(messages = []) {
     const db = firebaseApp.database();
-    db.ref(`message/${this.state.chatID}`).push(messages[0]);
+    db.ref(`message/${this.state.chatID}`).push({
+      ...messages[0],
+      createdAt: new Date().getTime(),
+    });
     db.ref(`Chat/${this.state.chatID}`)
       .child('lastMessage')
-      .set(messages[0]);
+      .set({
+        ...messages[0],
+        createdAt: new Date().getTime(),
+      });
   }
 
   render() {

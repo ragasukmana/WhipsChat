@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {View, TouchableOpacity, Image, Text} from 'react-native';
+import React, { Component } from 'react';
+import { View, TouchableOpacity, Image, Text } from 'react-native';
 import toast from '../../Public/Component/toast';
-import {ListItem} from 'react-native-elements';
-import {firebaseApp} from '../../config/firebase';
+import { ListItem } from 'react-native-elements';
+import { firebaseApp } from '../../config/firebase';
 import styles from '../../Public/Component/style';
 import ImagePicker from 'react-native-image-picker';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 class friendpage extends Component {
   state = {
@@ -19,14 +19,14 @@ class friendpage extends Component {
       <View style={styles.headContainerSetting}>
         <View style={styles.containerSetting}>
           <View style={styles.headerImageSetting}>
-            {this.props.auth.data.photoURL === null ? (
+            {this.props.auth.data.photoURL === undefined ? (
               <Image
                 source={require('../../Public/Assets/images/default.png')}
                 style={styles.imageSetting}
               />
             ) : (
               <Image
-                source={{uri: dataProfile.photoURL}}
+                source={{ uri: dataProfile.photoURL }}
                 style={styles.imageSetting}
               />
             )}
@@ -46,7 +46,7 @@ class friendpage extends Component {
                   title="Name"
                   subtitle={profile.name}
                   bottomDivider
-                  rightIcon={{name: 'keyboard-arrow-right', size: 32}}
+                  rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -56,7 +56,7 @@ class friendpage extends Component {
                   title="Status"
                   subtitle={profile.status}
                   bottomDivider
-                  rightIcon={{name: 'keyboard-arrow-right', size: 32}}
+                  rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
                 />
               </TouchableOpacity>
             </View>
@@ -64,7 +64,7 @@ class friendpage extends Component {
               <ListItem
                 title="SignOut"
                 bottomDivider
-                rightIcon={{name: 'exit-to-app'}}
+                rightIcon={{ name: 'exit-to-app' }}
               />
             </TouchableOpacity>
           </View>

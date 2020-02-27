@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
-import {View, TouchableOpacity, Image, Text} from 'react-native';
+import React, { Component } from 'react';
+import { View, TouchableOpacity, Image, Text } from 'react-native';
 import toast from '../../Public/Component/toast';
-import {ListItem} from 'react-native-elements';
-import {firebaseApp} from '../../config/firebase';
+import { ListItem } from 'react-native-elements';
+import { firebaseApp } from '../../config/firebase';
 import styles from '../../Public/Component/style';
 import ImagePicker from 'react-native-image-picker';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 class Setting extends Component {
   static navigationOptions = {
@@ -40,13 +40,13 @@ class Setting extends Component {
   };
 
   submitChangeFriend = photo => {
-    this.setState({loading: true});
+    this.setState({ loading: true });
     let authUpdate = firebaseApp.auth();
     let db = firebaseApp.database();
     let dataUpdate = {};
     const myid = this.props.auth.data.uid;
     authUpdate.currentUser
-      .updateProfile({photoURL: this.state.status})
+      .updateProfile({ photoURL: this.state.status })
       .then(() => {
         dataUpdate[`users/${myid}/photoURL`] = photo;
         db.ref('users')
@@ -67,7 +67,7 @@ class Setting extends Component {
         toast('Failed update status');
       })
       .finally(() => {
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   };
 
@@ -94,7 +94,7 @@ class Setting extends Component {
           });
           this.handleUpload(source.uri, filename)
             .then(snapshot => {
-              const {fullPath} = snapshot.metadata;
+              const { fullPath } = snapshot.metadata;
               firebaseApp
                 .storage()
                 .ref()
@@ -140,8 +140,10 @@ class Setting extends Component {
     firebaseApp
       .auth()
       .signOut()
-      .then(function() {
+      .then(() => {
         toast('Account Success Sign Out');
+        this.props.requestLogout();
+        this.props.navigation.navigate('Auth');
       })
       .catch(function(error) {
         var errorMessage = error.message;
@@ -155,7 +157,7 @@ class Setting extends Component {
     try {
       db.ref(`/users/${myid}`).on('value', res => {
         let dataUser = res.val();
-        this.setState({dataUser: dataUser});
+        this.setState({ dataUser: dataUser });
       });
     } catch (error) {
       toast(error);
@@ -163,7 +165,7 @@ class Setting extends Component {
   };
 
   render() {
-    const {dataProfile} = this.state;
+    const { dataProfile } = this.state;
     const profile = this.state.dataUser;
 
     return (
@@ -177,7 +179,7 @@ class Setting extends Component {
               />
             ) : (
               <Image
-                source={{uri: dataProfile.photoURL}}
+                source={{ uri: dataProfile.photoURL }}
                 style={styles.imageSetting}
               />
             )}
@@ -197,7 +199,7 @@ class Setting extends Component {
                   title="Name"
                   subtitle={profile.name}
                   bottomDivider
-                  rightIcon={{name: 'keyboard-arrow-right', size: 32}}
+                  rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
                 />
               </TouchableOpacity>
               <TouchableOpacity
@@ -207,7 +209,7 @@ class Setting extends Component {
                   title="Status"
                   subtitle={profile.status}
                   bottomDivider
-                  rightIcon={{name: 'keyboard-arrow-right', size: 32}}
+                  rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
                 />
               </TouchableOpacity>
             </View>
@@ -215,7 +217,7 @@ class Setting extends Component {
               <ListItem
                 title="SignOut"
                 bottomDivider
-                rightIcon={{name: 'exit-to-app'}}
+                rightIcon={{ name: 'exit-to-app' }}
               />
             </TouchableOpacity>
           </View>
@@ -231,11 +233,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  requestAuth: payload =>
-    dispatch({
-      type: 'POST_LOGIN_FULFILLED',
-      payload,
-    }),
+  requestLogout: () => dispatch({ type: 'POST_LOGOUT' }),
 });
 export default connect(
   mapStateToProps,

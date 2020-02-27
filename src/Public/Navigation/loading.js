@@ -1,15 +1,25 @@
-import React, {Component} from 'react';
-import {View, ImageBackground} from 'react-native';
+import React, { Component } from 'react';
+import { View, ImageBackground } from 'react-native';
 import firebase from 'firebase';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import styles from '../../Public/Component/style';
 
 class Loading extends Component {
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      this.props.navigation.navigate(user ? 'App' : 'Auth');
+    // firebase.auth().onAuthStateChanged(user => {
+    //   console.log(user);
+    //   this.props.navigation.navigate(user ? 'App' : 'Auth');
+    //   this.props.requestAuth(user);
+    // });
+    const user = this.props.auth.data;
+    console.log(user);
+
+    if (user != null) {
       this.props.requestAuth(user);
-    });
+      this.props.navigation.navigate('App');
+    } else {
+      this.props.navigation.navigate('Auth');
+    }
   }
 
   render() {

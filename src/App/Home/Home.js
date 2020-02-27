@@ -4,6 +4,7 @@ import { firebaseApp } from '../../config/firebase';
 import { ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import styles from '../../Public/Component/style';
+import Moment from 'moment';
 
 class Home extends Component {
   static navigationOptions = {
@@ -49,43 +50,50 @@ class Home extends Component {
     const dataChat = this.state.listChat[chatId];
     const receiver = this.getReceiver(dataChat.member);
     const lastMessages = this.state.listChat[chatId].lastMessage;
-
+    const createdAt = this.state.listChat[chatId].lastMessage.createdAt;
     return (
       <View>
         <TouchableOpacity onPress={() => this.handleChat(chatId)}>
           {receiver.photoURL === undefined ? (
-            <ListItem
-              leftAvatar={{
-                source: require('../../Public/Assets/images/default.png'),
-              }}
-              title={receiver.name}
-              subtitle={lastMessages.text}
-              badge={{
-                value: 1,
-                textStyle: { color: 'white' },
-                containerStyle: { marginTop: 20 },
-                badgeStyle: { backgroundColor: '#2644F8' },
-              }}
-            />
+            <View>
+              <ListItem
+                leftAvatar={{
+                  source: require('../../Public/Assets/images/default.png'),
+                }}
+                title={receiver.name}
+                subtitle={lastMessages.text}
+                badge={{
+                  value: 1,
+                  textStyle: { color: 'white' },
+                  containerStyle: { marginTop: 20 },
+                  badgeStyle: { backgroundColor: '#2644F8' },
+                }}
+              />
+              <View style={{ position: 'absolute', right: 10, top: 10 }}>
+                <Text>{Moment(createdAt).format('h:mm')}</Text>
+              </View>
+            </View>
           ) : (
-            <ListItem
-              leftAvatar={{
-                source: { uri: receiver.photoURL },
-              }}
-              title={receiver.name}
-              subtitle={lastMessages.text}
-              badge={{
-                value: 1,
-                textStyle: { color: 'white' },
-                containerStyle: { marginTop: 20 },
-                badgeStyle: { backgroundColor: '#2644F8' },
-              }}
-            />
+            <View>
+              <ListItem
+                leftAvatar={{
+                  source: { uri: receiver.photoURL },
+                }}
+                title={receiver.name}
+                subtitle={lastMessages.text}
+                badge={{
+                  value: 1,
+                  textStyle: { color: 'white' },
+                  containerStyle: { marginTop: 20 },
+                  badgeStyle: { backgroundColor: '#2644F8' },
+                }}
+              />
+              <View style={{ position: 'absolute', right: 10, top: 10 }}>
+                <Text>{Moment(createdAt).format('h:mm')}</Text>
+              </View>
+            </View>
           )}
         </TouchableOpacity>
-        <View style={{ position: 'absolute', right: 10, top: 10 }}>
-          <Text>11:00</Text>
-        </View>
       </View>
     );
   };

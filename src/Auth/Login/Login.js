@@ -18,10 +18,12 @@ class Login extends Component {
     headerShown: false,
   };
   state = {
-    email: 'ragasukmana76@gmail.com',
-    password: 'raga97',
-    // email: 'irvan@gmail.com',
-    // password: 'irvan99',
+    // email: 'ragasukmana76@gmail.com',
+    // password: 'raga97',
+    email: 'irvan@gmail.com',
+    password: 'irvan99',
+    // email: 'yusuf@mail.com',
+    // password: 'yusuf97',
     loading: false,
   };
 
@@ -43,8 +45,11 @@ class Login extends Component {
     firebaseApp
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then(res => {
         toast('Success Login');
+        this.props.requestAuth(res.user);
+      })
+      .then(() => {
         this.props.navigation.navigate('App');
       })
       .catch(function(error) {
