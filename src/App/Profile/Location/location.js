@@ -3,7 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { firebaseApp } from '../../../config/firebase';
 import { connect } from 'react-redux';
-import { Button, Avatar, Icon } from 'react-native-elements';
+import { Button, Avatar } from 'react-native-elements';
+import { DEFAULT_PHOTO } from 'react-native-dotenv';
 
 class Location extends Component {
   state = {
@@ -11,8 +12,7 @@ class Location extends Component {
     text: '',
     idFriend: this.props.navigation.state.params.idFriend.uid,
     photoFriend: this.props.navigation.state.params.idFriend.photoURL,
-    myPhoto:
-      'https://cdn3.iconfinder.com/data/icons/bunch-of-stuff/126/slice87-512.png',
+    myPhoto: DEFAULT_PHOTO,
     // latitudeFriend: this.props.navigation.state.params.idFriend.latitude,
     // longitudeFriend: this.props.navigation.state.params.idFriend.longitude,
     latitudeFriend: -6.5980046,

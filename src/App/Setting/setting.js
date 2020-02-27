@@ -246,7 +246,7 @@ class Setting extends Component {
               </View>
               <TouchableOpacity onPress={() => this.handleLogout()}>
                 <ListItem
-                  title="SignOut"
+                  title="Sign out"
                   bottomDivider
                   rightIcon={{ name: 'exit-to-app' }}
                 />

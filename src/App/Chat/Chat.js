@@ -136,17 +136,21 @@ class Chat extends React.Component {
               let dataFriend = res.val();
               this.setState({ getAvatar: dataFriend });
             });
-            // console.log(props.currentMessage.user._id);
             return (
-              // <Image
-              //   source={require('../../Public/Assets/images/default.png')}
-              //   style={styles.avatarChat}
-              // />
-              <Avatar
-                rounded
-                source={{ uri: foto.photoURL }}
-                style={styles.avatarChat}
-              />
+              <View>
+                {foto.photoURL !== null ? (
+                  <Avatar
+                    rounded
+                    source={{ uri: foto.photoURL }}
+                    style={styles.avatarChat}
+                  />
+                ) : (
+                  <Image
+                    source={require('../../Public/Assets/images/default.png')}
+                    style={styles.avatarChat}
+                  />
+                )}
+              </View>
             );
           }}
         />
