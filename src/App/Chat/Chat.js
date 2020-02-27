@@ -3,7 +3,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import { firebaseApp } from '../../config/firebase';
 import { connect } from 'react-redux';
 import styles from '../../Public/Component/style';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 class Chat extends React.Component {

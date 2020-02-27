@@ -52,6 +52,7 @@ class Regis extends Component {
       .then(() => {
         this.props.requestAuth();
         this.props.navigation.navigate('Login');
+        toast('Signup Success');
       })
       .catch(function(error) {
         var errorMessage = error.message;

@@ -18,12 +18,8 @@ class Login extends Component {
     headerShown: false,
   };
   state = {
-    email: 'ragasukmana76@gmail.com',
-    password: 'raga97',
-    // email: 'irvan@gmail.com',
-    // password: 'irvan99',
-    // email: 'yusuf@mail.com',
-    // password: 'yusuf97',
+    // email: 'ragasukmana76@gmail.com',
+    // password: 'raga97',
     // email: 'seblakkuy@mail.com',
     // password: 'seblakkuy123',
 

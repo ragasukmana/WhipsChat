@@ -46,8 +46,8 @@ class Profile extends Component {
     this.props.navigation.navigate('PageFriends', { info: item });
   };
 
-  handleLocation() {
-    this.props.navigation.navigate('Location');
+  handleLocation(item) {
+    this.props.navigation.navigate('Location', { idFriend: item });
   }
 
   render() {
@@ -83,7 +83,7 @@ class Profile extends Component {
                           size={15}
                           reverse
                           color="#545CCB"
-                          onPress={() => this.handleLocation()}
+                          onPress={() => this.handleLocation(item)}
                         />
                       </View>
                     }
@@ -113,7 +113,7 @@ class Profile extends Component {
                           size={15}
                           reverse
                           color="#545CCB"
-                          onPress={() => this.handleLocation()}
+                          onPress={() => this.handleLocation(item)}
                         />
                       </View>
                     }

@@ -50,21 +50,21 @@ const Settingscreen = createStackNavigator({
   },
 });
 
-// Homescreen.navigationOptions = ({navigation}) => {
-//   let tabBarVisible;
-//   if (navigation.state.routes.length > 1) {
-//     navigation.state.routes.map(route => {
-//       if (route.routeName === 'Chat') {
-//         tabBarVisible = false;
-//       } else {
-//         tabBarVisible = true;
-//       }
-//     });
-//   }
-//   return {
-//     tabBarVisible,
-//   };
-// };
+Profilescreen.navigationOptions = ({ navigation }) => {
+  let tabBarVisible;
+  if (navigation.state.routes.length > 1) {
+    navigation.state.routes.map(route => {
+      if (route.routeName === 'Location') {
+        tabBarVisible = false;
+      } else {
+        tabBarVisible = true;
+      }
+    });
+  }
+  return {
+    tabBarVisible,
+  };
+};
 
 export default createBottomTabNavigator(
   {

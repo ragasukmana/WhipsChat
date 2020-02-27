@@ -31,7 +31,6 @@ class Home extends Component {
       .startAt('')
       .on('value', snap => {
         const listChat = snap.val() == null ? {} : snap.val();
-        // const objectToArray = listChat ? Object.values(listChat) : [];
         const objectToKey = Object.keys(listChat);
         this.setState({ listChat: listChat, listChatId: objectToKey });
       });
@@ -48,12 +47,27 @@ class Home extends Component {
     );
     if (hasLocationPermission) {
       let db = firebaseApp.database();
+      const myId = this.props.auth.data.uid;
+      let dataUpdate = {};
       Geolocation.getCurrentPosition(position => {
         db.ref(`users/${user_id}/latitude`).set(position.coords.latitude);
         db.ref(`users/${user_id}/longitude`).set(position.coords.longitude);
-        error => {
-          console.log(error.code, error.message);
-        },
+        db.ref('users')
+          .orderByChild(`friend/${myId}`)
+          .startAt('')
+          .once('value')
+          .then(snap => {
+            const snapVal = snap.val();
+            const otherUser = snapVal == null ? [] : Object.keys(snapVal);
+            otherUser.forEach(key => {
+              dataUpdate[`users/${key}/friend/${myId}/latitude`] =
+                position.coords.latitude;
+              dataUpdate[`users/${key}/friend/${myId}/longitude`] =
+                position.coords.longitude;
+            });
+            db.ref().update(dataUpdate);
+          });
+        () => {},
           { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
       });
     }
