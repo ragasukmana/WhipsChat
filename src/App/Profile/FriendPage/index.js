@@ -1,3 +1,3 @@
-import friendpage from './Friendpage';
+import Friendpage from './Friendpage';
 
-export default friendpage;
+export default Friendpage;

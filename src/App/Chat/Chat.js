@@ -4,6 +4,7 @@ import { firebaseApp } from '../../config/firebase';
 import { connect } from 'react-redux';
 import styles from '../../Public/Component/style';
 import { View, Image } from 'react-native';
+import { Avatar } from 'react-native-elements';
 
 class Chat extends React.Component {
   state = {
@@ -14,7 +15,7 @@ class Chat extends React.Component {
     dataFriend: '',
     myData: [],
     chatID: '',
-    getAvater: '',
+    getAvatar: '',
   };
 
   createNewChat() {
@@ -30,8 +31,6 @@ class Chat extends React.Component {
         this.setState({ myData: data });
       })
       .then(() => {
-        console.log(this.state.myData);
-
         return db
           .ref('Chat')
           .push({
@@ -119,6 +118,8 @@ class Chat extends React.Component {
 
   render() {
     const myId = this.props.auth.data.uid;
+    const foto = this.state.getAvatar;
+
     return (
       <View style={styles.containerHome}>
         <GiftedChat
@@ -128,11 +129,22 @@ class Chat extends React.Component {
           user={{
             _id: myId,
           }}
-          renderAvatar={() => {
+          renderAvatar={props => {
+            const db = firebaseApp.database();
+            const friendId = props.currentMessage.user._id;
+            db.ref(`users/${friendId}`).on('value', res => {
+              let dataFriend = res.val();
+              this.setState({ getAvatar: dataFriend });
+            });
+            // console.log(props.currentMessage.user._id);
             return (
-              <Image
-                source={require('../../Public/Assets/images/default.png')}
-                style={{ width: 50, height: 50 }}
+              // <Image
+              //   source={require('../../Public/Assets/images/default.png')}
+              //   style={styles.avatarChat}
+              // />
+              <Avatar
+                source={{ uri: foto.photoURL }}
+                style={styles.avatarChat}
               />
             );
           }}

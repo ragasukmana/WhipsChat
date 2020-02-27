@@ -69,7 +69,7 @@ class Home extends Component {
                   badgeStyle: { backgroundColor: '#2644F8' },
                 }}
               />
-              <View style={{ position: 'absolute', right: 10, top: 10 }}>
+              <View style={styles.timeSend}>
                 <Text>{Moment(createdAt).format('h:mm')}</Text>
               </View>
             </View>
@@ -88,7 +88,7 @@ class Home extends Component {
                   badgeStyle: { backgroundColor: '#2644F8' },
                 }}
               />
-              <View style={{ position: 'absolute', right: 10, top: 10 }}>
+              <View style={styles.timeSend}>
                 <Text>{Moment(createdAt).format('h:mm')}</Text>
               </View>
             </View>

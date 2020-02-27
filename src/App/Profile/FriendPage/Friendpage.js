@@ -1,72 +1,42 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
-import toast from '../../Public/Component/toast';
+import { View, Image } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { firebaseApp } from '../../config/firebase';
-import styles from '../../Public/Component/style';
-import ImagePicker from 'react-native-image-picker';
 import { connect } from 'react-redux';
+import styles from '../../../Public/Component/style';
 
-class friendpage extends Component {
-  state = {
-    photo: null,
-    blobPhoto: null,
-    dataProfile: [],
-    dataUser: [],
+class Friendpage extends Component {
+  static navigationOptions = {
+    title: 'Friend Page',
   };
+
+  state = {
+    friendInfo: this.props.navigation.state.params.info,
+  };
+
   render() {
+    const friend = this.state.friendInfo;
     return (
       <View style={styles.headContainerSetting}>
         <View style={styles.containerSetting}>
           <View style={styles.headerImageSetting}>
-            {this.props.auth.data.photoURL === undefined ? (
+            {friend.photoURL === null ? (
               <Image
-                source={require('../../Public/Assets/images/default.png')}
+                source={require('../../../Public/Assets/images/default.png')}
                 style={styles.imageSetting}
               />
             ) : (
               <Image
-                source={{ uri: dataProfile.photoURL }}
+                source={{ uri: friend.photoURL }}
                 style={styles.imageSetting}
               />
             )}
           </View>
-          <View style={styles.headerChangePicture}>
-            <TouchableOpacity onPress={() => this.handlePicture()}>
-              <Text style={styles.colorFontChangePicture}>Change Pictures</Text>
-            </TouchableOpacity>
-          </View>
           <View style={styles.containerBodySetting}>
             <View>
-              <ListItem title="Email" subtitle={profile.email} bottomDivider />
-              <TouchableOpacity
-                activeOpacity={0.4}
-                onPress={() => this.props.navigation.navigate('Editname')}>
-                <ListItem
-                  title="Name"
-                  subtitle={profile.name}
-                  bottomDivider
-                  rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.4}
-                onPress={() => this.props.navigation.navigate('Editstatus')}>
-                <ListItem
-                  title="Status"
-                  subtitle={profile.status}
-                  bottomDivider
-                  rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
-                />
-              </TouchableOpacity>
+              <ListItem title="Email" subtitle={friend.email} bottomDivider />
+              <ListItem title="Name" subtitle={friend.name} bottomDivider />
+              <ListItem title="Status" subtitle={friend.status} bottomDivider />
             </View>
-            <TouchableOpacity onPress={() => this.handleLogout()}>
-              <ListItem
-                title="SignOut"
-                bottomDivider
-                rightIcon={{ name: 'exit-to-app' }}
-              />
-            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -74,4 +44,10 @@ class friendpage extends Component {
   }
 }
 
-export default friendpage;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps)(Friendpage);

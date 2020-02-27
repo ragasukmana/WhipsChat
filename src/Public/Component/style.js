@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     paddingHorizontal: 15,
   },
-  signup: {color: '#545CCB'},
+  signup: { color: '#545CCB' },
   containersplash: {
     flex: 1,
     justifyContent: 'center',
@@ -105,12 +105,12 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 80,
   },
-  containerBodySetting: {margin: 30, width: 300},
-  headContainerSetting: {flex: 1, backgroundColor: 'white'},
-  badgeHomeScreen: {position: 'absolute', top: -10, right: -8},
-  containerHome: {backgroundColor: 'white', flex: 1},
-  headerChangePicture: {marginTop: 20},
-  colorFontChangePicture: {color: '#2644F8', fontSize: 15},
+  containerBodySetting: { margin: 30, width: 300 },
+  headContainerSetting: { flex: 1, backgroundColor: 'white' },
+  badgeHomeScreen: { position: 'absolute', top: -10, right: -8 },
+  containerHome: { backgroundColor: 'white', flex: 1 },
+  headerChangePicture: { marginTop: 20 },
+  colorFontChangePicture: { color: '#2644F8', fontSize: 15 },
   inputChangeProfile: {
     elevation: 10,
     backgroundColor: 'white',
@@ -118,8 +118,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     marginTop: 30,
   },
-  containerInputChange: {backgroundColor: 'white', flex: 1, padding: 16},
-  buttonaddfriend: {position: 'absolute', bottom: 25, right: 15},
+  containerInputChange: { backgroundColor: 'white', flex: 1, padding: 16 },
+  buttonaddfriend: { position: 'absolute', bottom: 25, right: 15 },
+  timeSend: { position: 'absolute', right: 10, top: 10 },
+  avatarChat: { width: 30, height: 30 },
 });
 
 export default styles;

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList } from 'react-native';
 import { firebaseApp } from '../../config/firebase';
 import toast from '../../Public/Component/toast';
-import { ListItem, Icon } from 'react-native-elements';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ListItem, Icon, Avatar } from 'react-native-elements';
 import { connect } from 'react-redux';
 import styles from '../../Public/Component/style';
 
@@ -43,6 +42,10 @@ class Profile extends Component {
     this.props.navigation.navigate('Addfriend');
   };
 
+  handleProfileFriend = item => {
+    this.props.navigation.navigate('PageFriends', { info: item });
+  };
+
   render() {
     return (
       <View style={styles.containerHome}>
@@ -51,25 +54,64 @@ class Profile extends Component {
           renderItem={({ item }) => {
             return (
               <View>
-                <TouchableOpacity onPress={() => this.handleChat(item)}>
-                  {item.photoURL === undefined ? (
-                    <ListItem
-                      leftAvatar={{
-                        source: require('../../Public/Assets/images/default.png'),
-                      }}
-                      title={item.name}
-                      subtitle={item.status}
-                    />
-                  ) : (
-                    <ListItem
-                      leftAvatar={{
-                        source: { uri: item.photoURL },
-                      }}
-                      title={item.name}
-                      subtitle={item.status}
-                    />
-                  )}
-                </TouchableOpacity>
+                {item.photoURL === undefined ? (
+                  <ListItem
+                    onPress={() => this.handleChat(item)}
+                    leftAvatar={{
+                      source: require('../../Public/Assets/images/default.png'),
+                    }}
+                    title={item.name}
+                    subtitle={item.status}
+                    rightIcon={
+                      <View>
+                        <Icon
+                          name="person"
+                          type="material"
+                          containerStyle={{ borderWidth: 2 }}
+                          onPress={() => this.handleProfileFriend(item)}
+                        />
+                        <Icon
+                          name="my-location"
+                          type="material"
+                          size={15}
+                          reverse
+                          color="#545CCB"
+                          // onPress={() => this.handleProfileFriend()}
+                        />
+                      </View>
+                    }
+                  />
+                ) : (
+                  <ListItem
+                    leftAvatar={
+                      <Avatar rounded source={{ uri: item.photoURL }} />
+                    }
+                    onPress={() => this.handleChat(item)}
+                    title={item.name}
+                    subtitle={item.status}
+                    rightIcon={
+                      <View style={{ flexDirection: 'row' }}>
+                        <Icon
+                          name="info"
+                          type="material"
+                          size={15}
+                          reverse
+                          color="#545CCB"
+                          containerStyle={{ marginRight: 5 }}
+                          onPress={() => this.handleProfileFriend(item)}
+                        />
+                        <Icon
+                          name="my-location"
+                          type="material"
+                          size={15}
+                          reverse
+                          color="#545CCB"
+                          // onPress={() => this.handleProfileFriend()}
+                        />
+                      </View>
+                    }
+                  />
+                )}
               </View>
             );
           }}
