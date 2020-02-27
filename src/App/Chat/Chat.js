@@ -23,13 +23,15 @@ class Chat extends React.Component {
     const myId = this.props.auth.data.uid;
     const dataFriend = this.props.navigation.state.params.friendUid;
     return db
-      .ref(`/users/${friend}/friend/${myId}`)
+      .ref(`/users/${myId}`)
       .once('value')
       .then(res => {
         let data = res.val();
         this.setState({ myData: data });
       })
       .then(() => {
+        console.log(this.state.myData);
+
         return db
           .ref('Chat')
           .push({
@@ -117,8 +119,6 @@ class Chat extends React.Component {
 
   render() {
     const myId = this.props.auth.data.uid;
-    console.log(this.state.dataFriend);
-
     return (
       <View style={styles.containerHome}>
         <GiftedChat
