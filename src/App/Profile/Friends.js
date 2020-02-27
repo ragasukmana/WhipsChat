@@ -46,6 +46,10 @@ class Profile extends Component {
     this.props.navigation.navigate('PageFriends', { info: item });
   };
 
+  handleLocation() {
+    this.props.navigation.navigate('Location');
+  }
+
   render() {
     return (
       <View style={styles.containerHome}>
@@ -63,11 +67,14 @@ class Profile extends Component {
                     title={item.name}
                     subtitle={item.status}
                     rightIcon={
-                      <View>
+                      <View style={styles.containerLogoFL}>
                         <Icon
-                          name="person"
+                          name="info"
                           type="material"
-                          containerStyle={{ borderWidth: 2 }}
+                          size={15}
+                          reverse
+                          color="#545CCB"
+                          containerStyle={styles.marginLogoFL}
                           onPress={() => this.handleProfileFriend(item)}
                         />
                         <Icon
@@ -76,7 +83,7 @@ class Profile extends Component {
                           size={15}
                           reverse
                           color="#545CCB"
-                          // onPress={() => this.handleProfileFriend()}
+                          onPress={() => this.handleLocation()}
                         />
                       </View>
                     }
@@ -90,14 +97,14 @@ class Profile extends Component {
                     title={item.name}
                     subtitle={item.status}
                     rightIcon={
-                      <View style={{ flexDirection: 'row' }}>
+                      <View style={styles.containerLogoFL}>
                         <Icon
                           name="info"
                           type="material"
                           size={15}
                           reverse
                           color="#545CCB"
-                          containerStyle={{ marginRight: 5 }}
+                          containerStyle={styles.marginLogoFL}
                           onPress={() => this.handleProfileFriend(item)}
                         />
                         <Icon
@@ -106,7 +113,7 @@ class Profile extends Component {
                           size={15}
                           reverse
                           color="#545CCB"
-                          // onPress={() => this.handleProfileFriend()}
+                          onPress={() => this.handleLocation()}
                         />
                       </View>
                     }

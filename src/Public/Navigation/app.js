@@ -12,6 +12,7 @@ import Editname from '../../App/Setting/EditName';
 import Editstatus from '../../App/Setting/EditStatus';
 import Addfriend from '../../App/Profile/Addfriend/addfriend';
 import PageFriends from '../../App/Profile/FriendPage/Friendpage';
+import Location from '../../App/Profile/Location/location';
 
 const Homescreen = createStackNavigator({
   Home: {
@@ -31,6 +32,9 @@ const Profilescreen = createStackNavigator({
   },
   PageFriends: {
     screen: PageFriends,
+  },
+  Location: {
+    screen: Location,
   },
 });
 

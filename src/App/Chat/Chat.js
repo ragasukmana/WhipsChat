@@ -143,6 +143,7 @@ class Chat extends React.Component {
               //   style={styles.avatarChat}
               // />
               <Avatar
+                rounded
                 source={{ uri: foto.photoURL }}
                 style={styles.avatarChat}
               />

@@ -186,6 +186,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:10.0.1'
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
+    compile 'com.google.android.gms:play-services-base:+'
+    compile 'com.google.android.gms:play-services-location:+'
+    compile 'com.google.android.gms:play-services-maps:+'    
+
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";

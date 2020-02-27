@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  PermissionsAndroid,
+} from 'react-native';
 import { firebaseApp } from '../../config/firebase';
 import { ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import styles from '../../Public/Component/style';
 import Moment from 'moment';
+import Geolocation from 'react-native-geolocation-service';
 
 class Home extends Component {
   static navigationOptions = {
@@ -28,7 +35,29 @@ class Home extends Component {
         const objectToKey = Object.keys(listChat);
         this.setState({ listChat: listChat, listChatId: objectToKey });
       });
+    this.getLocation(myId);
   }
+
+  getLocation = async user_id => {
+    const hasLocationPermission = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: 'Example App',
+        message: 'Example App access to your location',
+      },
+    );
+    if (hasLocationPermission) {
+      let db = firebaseApp.database();
+      Geolocation.getCurrentPosition(position => {
+        db.ref(`users/${user_id}/latitude`).set(position.coords.latitude);
+        db.ref(`users/${user_id}/longitude`).set(position.coords.longitude);
+        error => {
+          console.log(error.code, error.message);
+        },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 };
+      });
+    }
+  };
 
   getReceiver = members => {
     const myID = this.props.auth.data.uid;

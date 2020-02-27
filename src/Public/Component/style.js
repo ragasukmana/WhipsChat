@@ -122,6 +122,9 @@ const styles = StyleSheet.create({
   buttonaddfriend: { position: 'absolute', bottom: 25, right: 15 },
   timeSend: { position: 'absolute', right: 10, top: 10 },
   avatarChat: { width: 30, height: 30 },
+  containerLogoFL: { flexDirection: 'row' },
+  marginLogoFL: { marginRight: 5 },
+  pinMap: { height: 35, width: 35 },
 });
 
 export default styles;
