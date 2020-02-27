@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, Image, Text } from 'react-native';
+import { View, TouchableOpacity, Image, Text, ScrollView } from 'react-native';
 import toast from '../../Public/Component/toast';
 import { ListItem } from 'react-native-elements';
 import { firebaseApp } from '../../config/firebase';
@@ -186,66 +186,74 @@ class Setting extends Component {
 
     return (
       <View style={styles.headContainerSetting}>
-        <View style={styles.containerSetting}>
-          <View style={styles.headerImageSetting}>
-            {this.props.auth.data.photoURL === null ? (
-              <Image
-                source={
-                  this.state.renderPhoto
-                    ? { uri: this.state.renderPhoto }
-                    : require('../../Public/Assets/images/default.png')
-                }
-                style={styles.imageSetting}
-              />
-            ) : (
-              <Image
-                source={
-                  this.state.renderPhoto
-                    ? { uri: this.state.renderPhoto }
-                    : { uri: dataProfile.photoURL }
-                }
-                style={styles.imageSetting}
-              />
-            )}
-          </View>
-          <View style={styles.headerChangePicture}>
-            <TouchableOpacity onPress={() => this.handlePicture()}>
-              <Text style={styles.colorFontChangePicture}>Change Pictures</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.containerBodySetting}>
-            <View>
-              <ListItem title="Email" subtitle={profile.email} bottomDivider />
-              <TouchableOpacity
-                activeOpacity={0.4}
-                onPress={() => this.props.navigation.navigate('Editname')}>
-                <ListItem
-                  title="Name"
-                  subtitle={profile.name}
-                  bottomDivider
-                  rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
+        <ScrollView>
+          <View style={styles.containerSetting}>
+            <View style={styles.headerImageSetting}>
+              {this.props.auth.data.photoURL === null ? (
+                <Image
+                  source={
+                    this.state.renderPhoto
+                      ? { uri: this.state.renderPhoto }
+                      : require('../../Public/Assets/images/default.png')
+                  }
+                  style={styles.imageSetting}
                 />
+              ) : (
+                <Image
+                  source={
+                    this.state.renderPhoto
+                      ? { uri: this.state.renderPhoto }
+                      : { uri: dataProfile.photoURL }
+                  }
+                  style={styles.imageSetting}
+                />
+              )}
+            </View>
+            <View style={styles.headerChangePicture}>
+              <TouchableOpacity onPress={() => this.handlePicture()}>
+                <Text style={styles.colorFontChangePicture}>
+                  Change Pictures
+                </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.4}
-                onPress={() => this.props.navigation.navigate('Editstatus')}>
+            </View>
+            <View style={styles.containerBodySetting}>
+              <View>
                 <ListItem
-                  title="Status"
-                  subtitle={profile.status}
+                  title="Email"
+                  subtitle={profile.email}
                   bottomDivider
-                  rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
+                />
+                <TouchableOpacity
+                  activeOpacity={0.4}
+                  onPress={() => this.props.navigation.navigate('Editname')}>
+                  <ListItem
+                    title="Name"
+                    subtitle={profile.name}
+                    bottomDivider
+                    rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  activeOpacity={0.4}
+                  onPress={() => this.props.navigation.navigate('Editstatus')}>
+                  <ListItem
+                    title="Status"
+                    subtitle={profile.status}
+                    bottomDivider
+                    rightIcon={{ name: 'keyboard-arrow-right', size: 32 }}
+                  />
+                </TouchableOpacity>
+              </View>
+              <TouchableOpacity onPress={() => this.handleLogout()}>
+                <ListItem
+                  title="SignOut"
+                  bottomDivider
+                  rightIcon={{ name: 'exit-to-app' }}
                 />
               </TouchableOpacity>
             </View>
-            <TouchableOpacity onPress={() => this.handleLogout()}>
-              <ListItem
-                title="SignOut"
-                bottomDivider
-                rightIcon={{ name: 'exit-to-app' }}
-              />
-            </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </View>
     );
   }
