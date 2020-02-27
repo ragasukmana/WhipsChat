@@ -17,6 +17,7 @@ class Setting extends Component {
     blobPhoto: null,
     dataProfile: [],
     dataUser: [],
+    renderPhoto: null,
   };
 
   componentDidMount() {
@@ -59,7 +60,21 @@ class Setting extends Component {
             otherUserKeys.forEach(key => {
               dataUpdate[`users/${key}/friend/${myid}/photoURL`] = photo;
             });
-            db.ref().update(dataUpdate);
+            db.ref('Chat')
+              .orderByChild(`member/${myid}`)
+              .startAt('')
+              .once('value')
+              .then(snaps => {
+                const snapVals = snaps.val();
+                const ontherUsersKey =
+                  snapVals == null ? [] : Object.keys(snapVals);
+                ontherUsersKey.forEach(keyIdChat => {
+                  dataUpdate[
+                    `Chat/${keyIdChat}/member/${myid}/photoURL`
+                  ] = photo;
+                });
+                db.ref().update(dataUpdate);
+              });
             toast('Done');
           });
       })
@@ -85,6 +100,7 @@ class Setting extends Component {
       } else if (response.error) {
         toast('Take Image Error');
       } else {
+        this.setState({ renderPhoto: response.uri });
         const source = response;
         if (source) {
           const ext = source.fileName.split('.').pop();
@@ -174,12 +190,20 @@ class Setting extends Component {
           <View style={styles.headerImageSetting}>
             {this.props.auth.data.photoURL === null ? (
               <Image
-                source={require('../../Public/Assets/images/default.png')}
+                source={
+                  this.state.renderPhoto
+                    ? { uri: this.state.renderPhoto }
+                    : require('../../Public/Assets/images/default.png')
+                }
                 style={styles.imageSetting}
               />
             ) : (
               <Image
-                source={{ uri: dataProfile.photoURL }}
+                source={
+                  this.state.renderPhoto
+                    ? { uri: this.state.renderPhoto }
+                    : { uri: dataProfile.photoURL }
+                }
                 style={styles.imageSetting}
               />
             )}

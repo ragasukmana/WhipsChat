@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {View, TextInput} from 'react-native';
-import {Button} from 'react-native-elements';
+import React, { Component } from 'react';
+import { View, TextInput } from 'react-native';
+import { Button } from 'react-native-elements';
 import styles from '../../../Public/Component/style';
-import {firebaseApp} from '../../../config/firebase';
+import { firebaseApp } from '../../../config/firebase';
 import toast from '../../../Public/Component/toast';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 class Editstatus extends Component {
   static navigationOptions = {
@@ -26,7 +26,7 @@ class Editstatus extends Component {
     try {
       db.ref(`/users/${myid}`).on('value', res => {
         let dataUser = res.val();
-        this.setState({dataUser: dataUser, status: dataUser.status});
+        this.setState({ dataUser: dataUser, status: dataUser.status });
       });
     } catch (error) {
       toast(error);
@@ -34,18 +34,18 @@ class Editstatus extends Component {
   };
 
   inputData = (text, type) => {
-    this.setState({[type]: text});
+    this.setState({ [type]: text });
   };
 
   submitChange = () => {
-    this.setState({loading: true});
+    this.setState({ loading: true });
     let authUpdate = firebaseApp.auth();
     let db = firebaseApp.database();
     let dataUpdate = {};
     const myid = this.props.auth.data.uid;
 
     authUpdate.currentUser
-      .updateProfile({status: this.state.status})
+      .updateProfile({ status: this.state.status })
       .then(() => {
         const status = this.state.status;
         dataUpdate[`users/${myid}/status`] = status;
@@ -59,7 +59,21 @@ class Editstatus extends Component {
             otherUserKeys.forEach(key => {
               dataUpdate[`users/${key}/friend/${myid}/status`] = status;
             });
-            db.ref().update(dataUpdate);
+            db.ref('Chat')
+              .orderByChild(`member/${myid}`)
+              .startAt('')
+              .once('value')
+              .then(snaps => {
+                const snapVals = snaps.val();
+                const ontherUsersKey =
+                  snapVals == null ? [] : Object.keys(snapVals);
+                ontherUsersKey.forEach(keyIdChat => {
+                  dataUpdate[
+                    `Chat/${keyIdChat}/member/${myid}/status`
+                  ] = status;
+                });
+                db.ref().update(dataUpdate);
+              });
             toast('Status success change');
           });
       })
@@ -67,7 +81,7 @@ class Editstatus extends Component {
         toast('Failed update status');
       })
       .finally(() => {
-        this.setState({loading: false});
+        this.setState({ loading: false });
       });
   };
 

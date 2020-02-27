@@ -12,8 +12,6 @@ class Loading extends Component {
     //   this.props.requestAuth(user);
     // });
     const user = this.props.auth.data;
-    console.log(user);
-
     if (user != null) {
       this.props.requestAuth(user);
       this.props.navigation.navigate('App');

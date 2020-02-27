@@ -3,7 +3,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import { firebaseApp } from '../../config/firebase';
 import { connect } from 'react-redux';
 import styles from '../../Public/Component/style';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 
 class Chat extends React.Component {
   state = {
@@ -14,6 +14,7 @@ class Chat extends React.Component {
     dataFriend: '',
     myData: [],
     chatID: '',
+    getAvater: '',
   };
 
   createNewChat() {
@@ -86,8 +87,6 @@ class Chat extends React.Component {
     if (this.props.navigation.state.params.listChatId !== undefined) {
       this.setState({ chatID: this.props.navigation.state.params.listChatId });
       this.addListener(this.props.navigation.state.params.listChatId);
-
-      // this.addListener(this.state.chatID);
     } else {
       const toUid = this.props.navigation.state.params.friendUid.uid;
       this.checkChat(toUid).then(chatID => {
@@ -118,6 +117,8 @@ class Chat extends React.Component {
 
   render() {
     const myId = this.props.auth.data.uid;
+    console.log(this.state.dataFriend);
+
     return (
       <View style={styles.containerHome}>
         <GiftedChat
@@ -126,6 +127,14 @@ class Chat extends React.Component {
           onSend={messages => this.onSend(messages)}
           user={{
             _id: myId,
+          }}
+          renderAvatar={() => {
+            return (
+              <Image
+                source={require('../../Public/Assets/images/default.png')}
+                style={{ width: 50, height: 50 }}
+              />
+            );
           }}
         />
       </View>
