@@ -12,7 +12,7 @@ class Loading extends Component {
     //   this.props.requestAuth(user);
     // });
     const user = this.props.auth.data.uid;
-    if (user != null) {
+    if (user) {
       this.props.requestAuth(user);
       this.props.navigation.navigate('App');
     } else {

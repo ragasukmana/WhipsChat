@@ -143,6 +143,13 @@ android {
         }
     }
     signingConfigs {
+            release {
+        storeFile file('my-release-key.keystore')
+        storePassword 'whipschat'
+        keyAlias 'alias_name'
+        keyPassword 'whipschat'
+        }
+
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -157,7 +164,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://facebook.github.io/react-native/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
