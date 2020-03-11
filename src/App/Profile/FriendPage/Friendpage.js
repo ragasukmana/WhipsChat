@@ -20,14 +20,14 @@ class Friendpage extends Component {
         <ScrollView>
           <View style={styles.containerSetting}>
             <View style={styles.headerImageSetting}>
-              {friend.photoURL === null ? (
+              {friend.photoURL ? (
                 <Image
-                  source={require('../../../Public/Assets/images/default.png')}
+                  source={{ uri: friend.photoURL }}
                   style={styles.imageSetting}
                 />
               ) : (
                 <Image
-                  source={{ uri: friend.photoURL }}
+                  source={require('../../../Public/Assets/images/default.png')}
                   style={styles.imageSetting}
                 />
               )}

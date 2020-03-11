@@ -74,11 +74,6 @@ export default createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => (
           <View>
             <Icon name="chat" type="material" size={22} color={tintColor} />
-            {/* <Badge
-              value={99}
-              status="primary"
-              containerStyle={styles.badgeHomeScreen}
-            /> */}
           </View>
         ),
       }),

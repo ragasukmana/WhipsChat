@@ -97,11 +97,11 @@ class Home extends Component {
     return (
       <View>
         <TouchableOpacity onPress={() => this.handleChat(chatId)}>
-          {receiver.photoURL === undefined ? (
+          {receiver.photoURL ? (
             <View>
               <ListItem
                 leftAvatar={{
-                  source: require('../../Public/Assets/images/default.png'),
+                  source: { uri: receiver.photoURL },
                 }}
                 title={receiver.name}
                 subtitle={lastMessages.text}
@@ -120,7 +120,7 @@ class Home extends Component {
             <View>
               <ListItem
                 leftAvatar={{
-                  source: { uri: receiver.photoURL },
+                  source: require('../../Public/Assets/images/default.png'),
                 }}
                 title={receiver.name}
                 subtitle={lastMessages.text}

@@ -6,15 +6,12 @@ import styles from '../../Public/Component/style';
 
 class Loading extends Component {
   componentDidMount() {
-    // firebase.auth().onAuthStateChanged(user => {
-    //   console.log(user);
-    //   this.props.navigation.navigate(user ? 'App' : 'Auth');
-    //   this.props.requestAuth(user);
-    // });
-    const user = this.props.auth.data.uid;
+    const user = this.props.auth.data;
     if (user) {
-      this.props.requestAuth(user);
-      this.props.navigation.navigate('App');
+      firebase.auth().onAuthStateChanged(datauser => {
+        this.props.navigation.navigate('App');
+        this.props.requestAuth(datauser);
+      });
     } else {
       this.props.navigation.navigate('Auth');
     }

@@ -18,12 +18,9 @@ class Login extends Component {
     headerShown: false,
   };
   state = {
-    // email: 'ragasukmana76@gmail.com',
-    // password: 'raga97',
-    // email: 'seblakkuy@mail.com',
-    // password: 'seblakkuy123',
-
     loading: false,
+    email: '',
+    password: '',
   };
 
   handleRegis = () => {
@@ -51,7 +48,7 @@ class Login extends Component {
       .then(() => {
         this.props.navigation.navigate('App');
       })
-      .catch(function(error) {
+      .catch(error => {
         var errorMessage = error.message;
         toast(errorMessage);
       })

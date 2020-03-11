@@ -3,7 +3,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import { firebaseApp } from '../../config/firebase';
 import { connect } from 'react-redux';
 import styles from '../../Public/Component/style';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
 class Chat extends React.Component {
@@ -20,17 +20,19 @@ class Chat extends React.Component {
 
   createNewChat() {
     const db = firebaseApp.database();
-    let friend = this.props.navigation.state.params.friendUid.uid;
+    const friend = this.props.navigation.state.params.friendUid.uid;
     const myId = this.props.auth.data.uid;
     const dataFriend = this.props.navigation.state.params.friendUid;
     return db
       .ref(`/users/${myId}`)
       .once('value')
       .then(res => {
-        let data = res.val();
+        const data = res.val();
+        delete data.friend;
         this.setState({ myData: data });
       })
       .then(() => {
+        console.log(dataFriend);
         return db
           .ref('Chat')
           .push({
@@ -51,7 +53,7 @@ class Chat extends React.Component {
     const db = firebaseApp.database();
     db.ref(`message/${chatID}`).on('child_added', snap => {
       let data = snap.val();
-      if (data != null) {
+      if (data) {
         this.setState(previousState => ({
           messages: GiftedChat.append(previousState.messages, [data]),
         }));
@@ -68,7 +70,7 @@ class Chat extends React.Component {
       .once('value')
       .then(snap => {
         const getIdFriend = snap.val();
-        if (getIdFriend !== null) {
+        if (getIdFriend) {
           const objectToKey = Object.keys(getIdFriend);
           this.setState({ chatID: objectToKey[0] });
           return objectToKey[0];
@@ -79,19 +81,13 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
-    // const db = firebaseApp.database();
-    // const myUid = this.props.auth.data.uid;
-    // const toUid = this.props.navigation.state.params.friendUid.uid;
-    // console.log(this.props.navigation.state.params.listChatId);
-    // console.log(this.props.navigation.state.params.listChatId);
-
-    if (this.props.navigation.state.params.listChatId !== undefined) {
+    if (this.props.navigation.state.params.listChatId) {
       this.setState({ chatID: this.props.navigation.state.params.listChatId });
       this.addListener(this.props.navigation.state.params.listChatId);
     } else {
       const toUid = this.props.navigation.state.params.friendUid.uid;
       this.checkChat(toUid).then(chatID => {
-        if (chatID !== null) {
+        if (chatID) {
           this.addListener(chatID);
         } else {
           this.createNewChat().then(newChatID => {
@@ -138,7 +134,7 @@ class Chat extends React.Component {
             });
             return (
               <View>
-                {foto.photoURL !== null ? (
+                {foto.photoURL ? (
                   <Avatar
                     rounded
                     source={{ uri: foto.photoURL }}

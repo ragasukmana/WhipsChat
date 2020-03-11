@@ -58,12 +58,12 @@ class Profile extends Component {
           renderItem={({ item }) => {
             return (
               <View>
-                {item.photoURL === undefined ? (
+                {item.photoURL ? (
                   <ListItem
+                    leftAvatar={
+                      <Avatar rounded source={{ uri: item.photoURL }} />
+                    }
                     onPress={() => this.handleChat(item)}
-                    leftAvatar={{
-                      source: require('../../Public/Assets/images/default.png'),
-                    }}
                     title={item.name}
                     subtitle={item.status}
                     rightIcon={
@@ -90,10 +90,10 @@ class Profile extends Component {
                   />
                 ) : (
                   <ListItem
-                    leftAvatar={
-                      <Avatar rounded source={{ uri: item.photoURL }} />
-                    }
                     onPress={() => this.handleChat(item)}
+                    leftAvatar={{
+                      source: require('../../Public/Assets/images/default.png'),
+                    }}
                     title={item.name}
                     subtitle={item.status}
                     rightIcon={

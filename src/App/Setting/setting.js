@@ -189,12 +189,12 @@ class Setting extends Component {
         <ScrollView>
           <View style={styles.containerSetting}>
             <View style={styles.headerImageSetting}>
-              {this.props.auth.data.photoURL === null ? (
+              {this.props.auth.data.photoURL ? (
                 <Image
                   source={
                     this.state.renderPhoto
                       ? { uri: this.state.renderPhoto }
-                      : require('../../Public/Assets/images/default.png')
+                      : { uri: dataProfile.photoURL }
                   }
                   style={styles.imageSetting}
                 />
@@ -203,7 +203,7 @@ class Setting extends Component {
                   source={
                     this.state.renderPhoto
                       ? { uri: this.state.renderPhoto }
-                      : { uri: dataProfile.photoURL }
+                      : require('../../Public/Assets/images/default.png')
                   }
                   style={styles.imageSetting}
                 />

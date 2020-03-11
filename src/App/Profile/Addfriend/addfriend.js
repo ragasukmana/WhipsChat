@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {View, TextInput} from 'react-native';
-import {Button} from 'react-native-elements';
+import React, { Component } from 'react';
+import { View, TextInput } from 'react-native';
+import { Button } from 'react-native-elements';
 import styles from '../../../Public/Component/style';
-import {firebaseApp} from '../../../config/firebase';
+import { firebaseApp } from '../../../config/firebase';
 import toast from '../../../Public/Component/toast';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 class addfriend extends Component {
   static navigationOptions = {
@@ -16,7 +16,7 @@ class addfriend extends Component {
   };
 
   inputData = (text, type) => {
-    this.setState({[type]: text});
+    this.setState({ [type]: text });
   };
 
   addFriend = () => {
@@ -39,15 +39,15 @@ class addfriend extends Component {
                 .set({
                   ...newFriend,
                 });
-              this.setState({email: ''});
+              this.setState({ email: null }); //value of email
               toast('Friend added');
             } else {
-              this.setState({email: ''});
+              this.setState({ email: null }); //value of email
               toast('User not Found');
             }
           } else {
             toast('Cannot add same email');
-            this.setState({email: ''});
+            this.setState({ email: null }); //value of email
           }
         });
     } catch (error) {
